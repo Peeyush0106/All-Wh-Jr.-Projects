@@ -1,0 +1,22 @@
+  
+  bow.setAnimation("bow_no_string");
+  
+  var xValue = arrow.x + arrow.width/2;
+  // if(xValue < bow.x+bow.width/2) {
+  //   xValue = bow.x+bow.width/2;
+  // }
+  if(xValue < bow.x+bow.width/2) {
+    xValue = bow.x+bow.width/2;
+  }
+  line(bow.x+bow.width/2, bow.y-bow.height/2, xValue, bow.y);
+  line(bow.x+bow.width/2, bow.y+bow.height/2, xValue, bow.y); 
+
+  if(playState == 'go') {
+    if(arrow.y < bow.height/2){
+      arrow.y = bow.height/2;
+    }
+    
+    if(arrow.y > 400 - bow.height/2){
+      arrow.y = 400 - bow.height/2;
+    }
+  }

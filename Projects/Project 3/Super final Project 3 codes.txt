@@ -1,0 +1,192 @@
+var pocket_width_and_height = 30;
+//Pockets
+var pockets = createGroup(0, 0, pocket_width_and_height, pocket_width_and_height);
+pockets.add(createSprite(0, 0, pocket_width_and_height, pocket_width_and_height));
+pockets.add(createSprite(400, 0, pocket_width_and_height, pocket_width_and_height));
+pockets.add(createSprite(0, 400, pocket_width_and_height, pocket_width_and_height));
+pockets.add(createSprite(400, 400, pocket_width_and_height, pocket_width_and_height));
+pockets.setVisibleEach(false);
+
+//Strips
+var thickStripWidth = 7;
+var thinStripWidth = 3;
+var strips = createGroup();
+//Right
+strips.add(createSprite(365, 200, thickStripWidth, 300));
+strips.add(createSprite(380, 200, thinStripWidth, 300));
+//Left
+strips.add(createSprite(35, 200, thickStripWidth, 300));
+strips.add(createSprite(20, 200, thinStripWidth, 300));
+//Up
+strips.add(createSprite(200, 35, 300, thickStripWidth));
+strips.add(createSprite(200, 20, 300, thinStripWidth));
+//Down
+strips.add(createSprite(200, 365, 300, thickStripWidth));
+strips.add(createSprite(200, 380, 300, thinStripWidth));
+//Color 
+strips.setColorEach(rgb(0, 0 , 0));
+
+
+
+// Striker
+var striker = createSprite(200, 400, 10, 10);
+
+//Black
+var black1 = createSprite(210, 200, 10, 10);
+var black2 = createSprite(185, 175, 10, 10);
+var black3 = createSprite(185, 225, 10, 10);
+
+//Queen
+var queen = createSprite(200, 200, 10, 10);
+
+//White
+var white1 = createSprite(215, 175, 10, 10);
+var white2 = createSprite(190, 200, 10, 10);
+var white3 = createSprite(215, 225, 10, 10);
+
+//Animation of objects
+white2.setAnimation("whitepiece");
+black2.setAnimation("blackpiece");
+black1.setAnimation("blackpiece");
+white1.setAnimation("whitepiece");
+black3.setAnimation("blackpiece");
+white3.setAnimation("whitepiece");
+striker.setAnimation("striker");
+queen.setAnimation("queenpiece");
+
+
+function draw (){
+  createEdgeSprites();
+  white1.bounciness = 0.5;
+
+  background("white");
+  //Goals
+noFill();
+stroke("black");
+ellipse(0, 0, 70, 70);
+
+noFill();
+stroke("black");
+ellipse(0, 400, 70, 70);
+
+noFill();
+stroke("black");
+ellipse(400, 400, 70, 70);
+
+noFill();
+stroke("black");
+ellipse(400, 0, 70, 70);
+
+//Centre circle
+
+noFill();
+stroke("black");
+ellipse(200, 200, 100, 100);
+
+//Side circles
+ellipse(300, 300, 30, 30);
+ellipse(100, 300, 30, 30);
+ellipse(100, 100, 30, 30);
+ellipse(300, 100, 30, 30);
+
+  
+  //Bounciness
+  striker.bounciness = 0.2 + 0.2 ;
+  black1.bounciness = 0.2 + 0.1;
+  black2.bounciness = 0.2 + 0.1 ;
+  black3.bounciness = 0.2 + 0.1 ;
+  queen.bounciness = 0.2 + 0.1 ;
+  white1.bounciness = 0.2 + 0.1 ;
+  white2.bounciness = 0.2 + 0.1 ;
+  white3.bounciness = 0.2 + 0.1 ;
+  
+  //Bouncing
+  striker.bounceOff(edges);
+  striker.bounce(white1);
+  striker.bounce(black1);
+  striker.bounce(white2);
+  striker.bounce(black2);
+  striker.bounce(white3);
+  striker.bounce(black3);
+  striker.bounce(queen);
+
+  white1.bounce(black1);
+  white1.bounce(white2);
+  white1.bounce(black2);
+  white1.bounce(white3);
+  white1.bounce(black3);
+  white1.bounce(queen);
+  white1.bounceOff(edges);
+  
+  white2.bounce(black1);
+  white2.bounce(black2);
+  white2.bounce(white3);
+  white2.bounce(black3);
+  white2.bounce(queen);
+  white2.bounceOff(edges);
+  
+  white3.bounce(black1);
+  white3.bounce(black2);
+  white3.bounce(black3);
+  white3.bounce(queen);
+  white3.bounceOff(edges);
+  
+  black1.bounce(black2);
+  black1.bounce(black3);
+  black1.bounce(queen);
+  black1.bounceOff(edges);
+  
+  black2.bounce(black3);
+  black2.bounce(queen);
+  black2.bounceOff(edges);
+  
+  black3.bounce(queen);
+  black3.bounceOff(edges);
+  queen.bounceOff(edges);
+  
+  //Up
+  if (keyDown (UP_ARROW)){
+    striker.setVelocity(0, -10);
+  }
+  
+  //Down
+  if (keyDown (DOWN_ARROW)){
+    striker.setVelocity(0, 10);
+  }
+  
+  //Right
+  if (keyDown (RIGHT_ARROW)){
+    striker.setVelocity(10, 0);
+  }
+  
+  //Left
+  if (keyDown (LEFT_ARROW)){
+    striker.setVelocity(-10, 0);
+  }
+  
+  //Destroying coins
+  
+  if (white1.isTouching(pockets)){
+    white1.destroy();
+  }
+  if (white2.isTouching(pockets)){
+    white2.destroy();
+  }
+  if (white3.isTouching(pockets)){
+    white3.destroy();
+  }
+  if (black1.isTouching(pockets)){
+    black1.destroy();
+  }
+  if (black2.isTouching(pockets)){
+    black2.destroy();
+  }
+  if (black3.isTouching(pockets)){
+    black3.destroy();
+  }
+  if (queen.isTouching(pockets)){
+    queen.destroy();
+  }
+  
+  drawSprites();
+}

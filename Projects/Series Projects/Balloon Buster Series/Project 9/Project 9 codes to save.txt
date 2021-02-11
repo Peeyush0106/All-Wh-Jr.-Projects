@@ -1,0 +1,254 @@
+
+var playState = "still";
+
+//var allBalloons = createGroup();
+
+var rowsGroup = [];
+
+var colors = ['green', 'red', 'blue', 'yellow'];
+
+var rowsList = [];
+
+var totalRows = 4;
+
+for(var j = 0; j < totalRows; j++) {
+  var row = [];
+  var rowGroup = createGroup();
+  for(var i = 0; i < (totalRows - j) * 2; i++) {
+    var balloon = createSprite(40 + (j*35), 30 + (j * 50) + (i * 50));
+    row[i] = balloon;
+    rowGroup.add(balloon);
+  }
+  rowsList[j] = row;
+  rowGroup.setAnimationEach(colors[j]);
+  rowGroup.setScaleEach(0.9);
+  rowGroup.setHeightEach(57);
+}
+
+
+var arrow = createSprite(310, 200);
+arrow.setAnimation("arrow");
+
+var arrowsRemaining = 10;
+var resetArrowX = arrow.x;
+var bow = createSprite(340, 200);
+bow.setAnimation("bow_no_string");
+bow.rotateToDirection = true;
+
+createEdgeSprites();
+
+//var soundTimer = 0;
+
+function draw() {
+  background(rgb(135, 206, 235));
+  text(resetArrowX, 200, 200);
+  extraWork();
+  ballonDoBurst();
+  drawSprites();
+  
+}
+
+function extraWork(){
+
+  if(keyWentDown("space")){
+    playState = "go";
+    // text(arrow.direction, 200, 200);
+  }
+  
+  if(playState == "go"){
+    drawWork();
+  }
+  
+  
+  // if(arrow.isTouching(edges)){
+  //   resetArrow();
+  // }
+  
+  if(arrow.y){
+    resetArrow();
+  }
+  
+/*   if(playState !== "arrowMoving"){
+    if(arrow.y > 400 - bow.height/2){
+      arrow.y = 400 - bow.height/2;
+    }
+    if(arrow.y < bow.height/2){
+      arrow.y = bow.height/2;
+    }
+   }
+}
+*/
+function reset(){    
+  bow.y = 200;
+  arrow.y = 200;
+  arrow.x = 340;  
+  arrow.setSpeedAndDirection(0, 0);
+}
+
+
+function shoot(){    
+  //arrow.setVelocity(-2, 0);
+  if(arrow.direction >= 90){
+    arrow.setSpeedAndDirection(8, arrow.direction);
+  }
+  else{
+    arrow.setSpeedAndDirection(-8, arrow.direction);
+  }
+}
+
+
+function drawWork (){
+  //text(ärrowNumebr);
+  text(arrowsRemaining, 340, 20);
+  if(playState == "go" || playState == "still" ){
+    var xValue = arrow.x + arrow.width/2;
+    if(xValue < bow.x+bow.width/2) {
+      xValue = bow.x+bow.width/2;
+    }
+    line(bow.x+bow.width/2, bow.y-bow.height/2, xValue, bow.y);
+    line(bow.x+bow.width/2, bow.y+bow.height/2, xValue, bow.y); 
+  }
+  
+  if(playState == "go"){
+    arrow.collide(edges);
+  }
+  
+  commentsNotToUse();
+  bow.collide(edges);
+  
+  gamingControls();
+}
+
+
+
+function gamingControls(){
+    if(keyDown("up")){
+      bow.y = bow.y - 3;
+      arrow.y = arrow.y - 3;
+      playState = "arrowMoving";
+    }
+    if(keyDown("down")){
+      bow.y = bow.y + 3;
+      arrow.y = arrow.y + 3;
+      playState = "arrowMoving";
+    }
+    
+    if(keyDown("r")){
+      reset();
+    }
+  if(keyDown("enter")){
+    shoot();
+    playState = "arrowMoving";
+  }
+}
+
+function ballonDoBurst(){
+  
+  for(var i = 0; i < rowsList.length; i++) {
+    var row = rowsList[i];
+    for(var j = 0; j < row.length; j++) {
+      var color = colors[i];
+      var animationName = color+"_burst";
+      if(arrow.isTouching(row[j])){
+        row[j].setAnimation(animationName);
+      }
+    }
+  }
+}
+
+
+function resetArrow(){
+  arrow.visible = false;
+  arrow.destroy();
+  
+  if(arrowsRemaining > 0) {
+    arrowsRemaining = arrowsRemaining - 1;
+    arrow = createSprite(340, 200);
+    arrow.setAnimation("arrow");
+    arrow.visible = true;
+  } else {
+    
+    //You lose
+    
+  }
+} 
+
+
+
+
+function commentsNotToUse(){
+}  
+  /*if(arrowNumber == 10){
+    var lostImage = createSprite(200, 200);
+    lostImage.setAnimation("lost");
+    lostImage.setAnimation("lost");
+    lostImage.scale = 0.8;
+    
+    var lost3D = createSprite();
+    lost3D.x = (400 - lost3D.width/2) + 40;
+    lost3D.y = (0 + lost3D.width/2) - 40;
+    lost3D.visible = false;
+    lost3D.visible = false;
+    lost3D.setAnimation("lost_3d");
+    text((lost3D.x , lost3D.y), 200, 200);
+  }*/
+  
+  //text("You Lost!!!", 340, 20);
+  /*  backImage.setVelocity(-6, 0);
+  
+  if(backImage.x < 80){
+    backImage.x = (backImage.width/2);
+  }*/
+  // if(arrow.direction > 90){
+    //arrow.getDirection(90);
+  // }
+  
+  
+  /*    if(arrow.y > 400 - (bow.height/2)){
+      arrow.y = arrow.y = 400 - (bow.height/2);
+    }
+*/  
+  //background(rgb(/*46, 69, 78*/0, 199, 708)/*76afc7*/);
+  //background(rgb(52, 80, 92));
+
+    
+    // if(keyDown("left")){
+    //   arrow.rotation = arrow.rotation - 3;      
+    //   bow.rotation = bow.rotation - 3;
+
+    // }
+    // if(keyDown("right")){
+    //   arrow.rotation = arrow.rotation + 3;
+    //   bow.rotation = bow.rotation + 3;
+    // }
+  //arrow.collide(edges);
+
+/*  if(bow.y < 200){
+    bow.y = 200;
+  }
+*/  
+  // if(playState == "go"){
+  //   if(arrow.y < 200/* && playState !== "go"*/){
+  //     arrow.y = 200;
+  //   }
+  // } 
+  
+  
+  
+/*  if(playState == "go" || playState == "still" ){
+    var xValue = arrow.x + arrow.width/2;
+    if(xValue < bow.x+bow.width/2) {
+      xValue = bow.x+bow.width/2;
+    }
+    var angle = bow.rotation;
+    var xStart  = bow.x-(bow.width * cos(angle)/2);
+    var xEnd    = bow.x+(bow.width * cos(angle)/2);
+    var yStart  = bow.y-(bow.height * cos(angle))/2;
+    var yEnd    = bow.x+(bow.width * cos(angle)/2);
+    line(xStart, yStart, xValue, bow.y);
+    line(bow.x+bow.width/2, bow.y+bow.height/2, xValue, bow.y); 
+  }
+*/ 
+
+
+

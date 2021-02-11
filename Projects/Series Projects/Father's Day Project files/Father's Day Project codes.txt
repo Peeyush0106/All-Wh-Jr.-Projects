@@ -1,0 +1,94 @@
+//Objects
+var paddle = createSprite(0, 200, 20, 60);
+var balls = createGroup();
+var ball = createSprite(randomNumber(1, 400), randomNumber(1, 400) , 13, 13);
+
+//Colour
+paddle.tint = "blue";
+ball.shapeColor = rgb(randomNumber(0, 255), randomNumber(0, 255) , randomNumber(0, 255));
+balls.add(ball);
+
+//Timer and level
+var timer = 15;
+var levelCounter = 1;
+
+//Ball velocity
+ball.setVelocity(randomNumber(3, 9), randomNumber(3, 9));
+
+//Background
+background(rgb(0, randomNumber(0, 255), 0));
+
+//Audio 
+playSound("Favorite-Audio.mp3", false);
+
+
+//Draw functuion
+function draw() {
+  background("#FFDAB9");
+  paddle.x = World.mouseX;
+  paddle.y = World.mouseY;
+  createEdgeSprites();
+  balls.bounceOff(edges);
+  
+  var list = World.allSprites;
+  for (var i = 0; i < list.length; i++) {
+    if(!balls.contains(list[i])) {
+        continue;
+    }
+    for(var j = i+1; j < list.length; j++) {
+      if(!balls.contains(list[j])) {
+        continue;
+      }
+      list[i].bounce(list[j]);
+    }
+  }
+  paddle.bounce(edges);
+
+  if(balls.isTouching(paddle)){
+    balls.destroyEach();
+    paddle.pause();
+    while (true){
+      fill("red");
+      textSize(30);
+      text("GAME OVER!", 100, 200);
+      stopSound("Favorite-Audio.mp3", false);
+    }
+  }
+
+ 
+  if (World.seconds> timer * levelCounter) {
+    levelCounter++;
+    var nextball = createSprite(randomNumber(1, 400), randomNumber(1, 400) , 13, 13);
+    nextball.bounceOff(edges);
+    nextball.setVelocity(randomNumber(3, 7), randomNumber(3, 7));
+    nextball.shapeColor = rgb(randomNumber(0, 255), randomNumber(0, 255) , randomNumber(0, 255));
+    balls.add(nextball);
+    if(nextball.shapeColour == 	rgb(255,218,185)){
+      ball.shapeColor(rgb(randomNumber(0, 255), randomNumber(0, 255) , randomNumber(0, 255)));
+    }
+
+  }
+    
+  //Correcting ball color
+  if(ball.shapeColour == rgb(255,218,185)){
+   ball.shapeColor(rgb(randomNumber(0, 255), randomNumber(0, 255) , randomNumber(0, 255)));
+  }
+  
+  //correcting nextball color
+  drawSprites();
+  
+  if(levelCounter == 2){
+    ball.pause();
+    nextball.pause();
+    paddle.pause();
+      while (true){
+        fill("red");
+        textSize(30);
+        text("YOU WIN!", 100, 200);
+      }
+    
+  }
+
+//Draw function ends
+//GAME CODES OVER!!!
+}

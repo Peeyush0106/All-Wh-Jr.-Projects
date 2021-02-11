@@ -1,0 +1,100 @@
+  
+  //up
+  if(keyWentDown("up")){
+    car2State = "moving";
+    if(car2Stopped) {
+      if(car2DirectionForward) {
+        car2.setSpeedAndDirection(car2Speed, car2Direction);
+      } else {
+        if(car2Direction + 180 > 360) {
+        car2Direction = car2Direction - 180;
+        } else {
+        car2Direction = car2Direction + 180;
+        }
+      car2.setSpeedAndDirection(car2Speed, car2Direction);
+    }
+    } else {
+      if(!car2DirectionForward) {
+        if(car2Direction + 180 > 360) {
+          car2Direction = car2Direction - 180;
+        } else {
+          car2Direction = car2Direction + 180;
+        }
+        car2.setSpeedAndDirection(car2Speed, car2Direction);
+      }
+    }
+    car2DirectionForward = true;
+    car2Stopped = false;
+  }
+
+  //down
+  if(keyWentDown("down")){
+    car2State = "moving";
+    if(car2Stopped) {
+      if(car2DirectionForward) {
+        if(car2Direction + 180 > 360) {
+          car2Direction = car2Direction - 180;
+        } else {
+        car2Direction = car2Direction + 180;
+        }
+        car2.setSpeedAndDirection(car2Speed, car2Direction);
+      } else {
+        car2.setSpeedAndDirection(car2Speed, car2Direction);
+      }
+    } else {
+      if(car2DirectionForward) {
+        if(car2Direction + 180 > 360) {
+          car2Direction = car2Direction - 180;
+        } else {
+          car2Direction = car2Direction + 180;
+        }
+        car2.setSpeedAndDirection(car2Speed, car2Direction);
+      }
+    }
+      car2DirectionForward = false;
+      car2Stopped = false;
+  }
+  
+  //brake 
+  /*  if(keyDown("space")){
+  car2.setSpeedAndDirection(0, car2Direction);
+  car2Stopped = true;
+  }
+  */
+  
+  //left
+  if(keyDown("left")){
+    car2State = "moving";
+    if(!car2Stopped) {
+      if(car2Direction - turnAngle < 0) {
+        car2Direction = car2Direction + 360 - turnAngle;
+      } else {
+        car2Direction = car2Direction - turnAngle;
+      }
+      if(car2.rotation - turnAngle < 0) {
+        car2.rotation = car2.rotation + 360 - turnAngle;
+      } else {
+      car2.rotation = car2.rotation - turnAngle;
+    }
+      car2.setSpeedAndDirection(car2Speed, car2Direction);
+    }
+  }
+  
+  //right
+  if(keyDown("right")){
+    car2State = "moving";
+    if(!car2Stopped) {
+      if(car2Direction + turnAngle > 360) {
+        car2Direction = car2Direction - 360 + turnAngle;
+      } else {
+        car2Direction = car2Direction + turnAngle;
+      }
+        if(car2.rotation + turnAngle > 360) {
+          car2.rotation = car2.rotation - 360 + turnAngle;
+        } else {
+          car2.rotation = car2.rotation + turnAngle;
+        }
+      car2.setSpeedAndDirection(car2Speed, car2Direction);
+    }
+  }
+  

@@ -1,0 +1,100 @@
+playSound("sound://category_explosion/vibrant_game_cartoon_game_laser_hit_10_high_squeal.mp3", true);
+
+//borders
+var borders = createGroup();
+borders.add(createSprite(200, 70, 400, 5));
+borders.add(createSprite(200, 335, 400, 5));
+borders.setAnimationEach("borders");
+
+//var protect_up = createSprite(319, 55);
+var protect_up = createSprite(410, 55);
+protect_up.setAnimation("diamond_prot_up");
+
+//var protect_down = createSprite(360, 60);
+var protect_down = createSprite(500, 60);
+protect_down.setAnimation("diamond_prot_down");
+
+var start = createSprite(20, 365);
+start.setAnimation("starting");
+
+var natwarlal_thief = createSprite(20, 380, 20, 20);
+var thief_now_X = natwarlal_thief.x;
+var thief_now_Y = natwarlal_thief.y;
+
+var police_car = createSprite(30, 355);
+
+var diamond = createSprite(360, 30, 20, 20);
+
+var beam2 = createSprite(300, 90, 200, 5);
+var beam1 = createSprite(100, 300, 200, 5);
+beam1.shapeColor = "red";
+beam2.shapeColor = "red";
+beam1.velocityX = 0;
+beam1.velocityY = 9;
+beam2.velocityX = 0;
+beam2.velocityY = 9;
+
+
+
+diamond.setAnimation("diamond");
+
+police_car.visible = false;
+createEdgeSprites();
+
+
+function draw() {
+  background("white");
+  beam2.bounceOff(borders);
+  beam1.bounceOff(borders);
+  beam1.bounceOff(edges);
+  beam2.bounceOff(edges);
+  natwarlal_thief.bounceOff(edges);
+  
+  if(keyDown(UP_ARROW)){
+    natwarlal_thief.setVelocity(0, -5.5);
+  }
+  
+  if(keyDown(LEFT_ARROW)){
+    natwarlal_thief.setVelocity(-5, 0);
+  }
+  
+  if(keyDown(RIGHT_ARROW)){
+    natwarlal_thief.setVelocity(5, 0);
+  }
+  
+  if(keyDown(DOWN_ARROW)){
+    natwarlal_thief.setVelocity(0, 5.5);
+  }
+  if(natwarlal_thief.isTouching(beam1)||natwarlal_thief.isTouching(beam2)){
+    natwarlal_thief.pause;
+    police_car.y = thief_now_Y;
+    beam1.setVelocity(0, 0);
+    beam2.setVelocity(0, 0);
+    beam1.shapeColor = rgb(0, 200, 0);
+    beam2.shapeColor = rgb(0, 200, 0);
+    
+    natwarlal_thief.setVelocity(0, 0);
+    police_car.visible = true;
+    police_car.setAnimation("police_car_hori");
+    police_car.velocityY = 0;
+    police_car.velocityX = 2;
+    }
+    
+  if(police_car.isTouching(natwarlal_thief)){
+    police_car.pause();
+    stopSound("sound://category_explosion/vibrant_game_cartoon_game_laser_hit_10_high_squeal.mp3");
+    /*playSound("sound://default.mp3", false);
+    fill("black");
+    textSize(15);
+    text("Thief Natwarlal is caught!   Haha!", 80, 215);*/
+    }
+    
+    /*if(police_car.y == thief_now_Y){
+      police_car.setAnimation("police_car_vertical")
+      
+      
+    }*/
+    
+  drawSprites();
+  }
+

@@ -1,0 +1,132 @@
+var paddle = createSprite(0, 200, 20, 60);
+
+var balls = createGroup();
+var ball = createSprite(randomNumber(1, 400), randomNumber(1, 400) , 13, 13);
+paddle.shapeColor = "blue";
+
+balls.setTintEach = "yellow";
+//rgb((randomNumber(0, 255)), (randomNumber(0, 255)), (randomNumber(0, 255)));
+
+balls.add(ball);
+
+var timer = 15;
+var levelCounter = 1;
+
+ball.setVelocity(randomNumber(3, 7), randomNumber(3, 7));
+
+function draw() {
+
+  background("white");
+  paddle.x = World.mouseX;
+  paddle.y = World.mouseY;
+  createEdgeSprites();
+  
+  balls.bounceOff(edges);
+  
+  var list = World.allSprites;
+  for (var i = 0; i < list.length; i++) {
+    if(!balls.contains(list[i])) {
+        continue;
+    }
+    for(var j = i+1; j < list.length; j++) {
+      if(!balls.contains(list[j])) {
+        continue;
+      }
+      list[i].bounce(list[j]);
+    }
+  }
+  paddle.bounce(edges);
+
+  if(balls.isTouching(paddle)){
+    balls.destroyEach();
+    paddle.pause();
+    while (true){
+      fill("red");
+      textSize(30);
+      text("GAME OVER!", 100, 200);
+    }
+  }
+ 
+  if (World.seconds> timer * levelCounter) {
+    levelCounter++;
+    var nextball = createSprite(randomNumber(1, 400), randomNumber(1, 400) , 13, 13);
+    nextball.bounceOff(edges);
+    nextball.setVelocity(randomNumber(3, 7), randomNumber(3, 7));
+    balls.add(nextball);
+  }
+  drawSprites();
+}
+
+
+
+
+
+
+
+
+
+
+Paste this later
+
+//bouncing
+  
+  //white bouncing
+  
+  //1
+  white1.bounce(white2);
+  white1.bounce(white3);
+  white1.bounce(black2);
+  white1.bounce(black3);
+  white1.bounce(black1);
+  white1.bounce(queen);
+  white1.bounce(striker);
+  white1.bounceOff(edges);
+
+  
+  //2
+  white2.bounce(white3);
+  white2.bounce(black2);
+  white2.bounce(black3);
+  white2.bounce(black1);
+  white2.bounce(queen);
+  white2.bounce(striker);
+  white2.bounceOff(edges);
+
+  
+
+  //3
+  white3.bounce(black3);
+  white3.bounce(black1);
+  white3.bounce(queen);
+  white3.bounce(striker);
+  white3.bounceOff(edges);
+
+  //Black bouncing
+  
+  //1
+  black1.bounce(black2);
+  black1.bounce(black3);
+  black1.bounce(black2);
+  black1.bounce(queen);
+  black1.bounce(striker);
+  black1.bounceOff(edges);
+  
+  //2
+  black2.bounce(black3);
+  black2.bounce(black2);
+  black2.bounce(queen);
+  black2.bounce(striker);
+  black2.bounceOff(edges);
+  
+  //3
+  black3.bounce(black2);
+  black3.bounce(queen);
+  black3.bounce(striker);
+  black3.bounceOff(edges);
+  
+  //striker
+  striker.bounce(queen);
+  striker.bounceOff(edges);
+  
+  //Queen
+  queen.bounceOff(edges);

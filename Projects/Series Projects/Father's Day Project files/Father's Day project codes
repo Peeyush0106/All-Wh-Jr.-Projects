@@ -1,0 +1,44 @@
+var paddle = createSprite(0, 200, 20, 60);
+var ball = createSprite(randomNumber(1, 400), randomNumber(1, 400) , 13, 13);
+
+ball.setVelocity(randomNumber(3, 7), randomNumber(3, 7));
+
+function draw() {
+  background("white");
+  paddle.x = World.mouseX;
+  paddle.y = World.mouseY;
+  createEdgeSprites();
+  ball.bounceOff(edges);
+  paddle.bounce(edges);
+
+  //paddle.bounceOff("next_ball");
+  
+  if(ball.bounceOff(paddle)){
+    //fill("red");
+    //textSize(30);
+    //text("GAME OVER!", 100, 200);
+    
+    if (World.seconds>0) {
+     ball.destroy();
+     //ball.pause();
+     paddle.destroy();
+     //paddle.pause();
+     for (World.seconds; World.seconds > 0; World.seconds) {
+       fill("red");
+           textSize(30);
+           
+       text("GAME OVER!", 100, 200);
+     }
+     
+   }
+  }
+  drawSprites();
+ // ball.bounceOff(paddle);
+ 
+  if (World.seconds>4) {
+     //ball.destroy();
+     var next_ball = createSprite(randomNumber(1, 400), randomNumber(1, 400) , 13, 13);
+    // World.seconds = 0;
+     //paddle.destroy();
+   }
+  }
